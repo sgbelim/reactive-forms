@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Customer} from "../../customers/customers/customer";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {rangeValidator} from "./validators/range.validator";
 
 @Component({
   selector: 'app-reactive-customers',
@@ -22,6 +23,7 @@ export class ReactiveCustomersComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
       notification: 'email',
+      rating: [null, [rangeValidator]],
       sendCatalog: true
     })
   }
