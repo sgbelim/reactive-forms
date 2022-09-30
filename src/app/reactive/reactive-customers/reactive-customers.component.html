@@ -1,0 +1,159 @@
+<div class="card">
+  <div class="card-header">
+    Reactive Sign Up!
+  </div>
+
+  <div class="card-body">
+    <form novalidate
+          [formGroup]="reactiveCustomerForm">
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="firstNameId">First Name</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="firstNameId"
+                 type="text"
+                 placeholder="First Name (required)"
+                 formControlName="firstName"
+                 [ngClass]="{ 'is-invalid' : (reactiveCustomerForm.get('firstName').touched ||
+                                             reactiveCustomerForm.get('firstName').dirty) &&
+                                             !reactiveCustomerForm.get('firstName').valid}"
+          />
+          <span class="invalid-feedback">
+             <span *ngIf="reactiveCustomerForm.get('firstName').errors?.required">
+              Please enter your first name.
+            </span>
+            <span *ngIf="reactiveCustomerForm.get('firstName').errors?.minlength">
+              The first name must be longer than 3 characters.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="lastNameId">Last Name</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="lastNameId"
+                 type="text"
+                 placeholder="Last Name (required)"
+                 formControlName="lastName"
+                 [ngClass]="{'is-invalid': (reactiveCustomerForm.get('lastName').touched
+                 || reactiveCustomerForm.get('lastName').dirty)
+                 && !reactiveCustomerForm.get('lastName').valid }"/>
+          <span class="invalid-feedback">
+            <span *ngIf="reactiveCustomerForm.get('lastName').errors?.required">
+              Please enter your last name.
+            </span>
+            <span *ngIf="reactiveCustomerForm.get('lastName').errors?.maxlength">
+              The last name must be less than 50 characters.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="emailId">Email</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="emailId"
+                 type="email"
+                 placeholder="Email (required)"
+                 formControlName="email"
+                 [ngClass]="{'is-invalid': (reactiveCustomerForm.get('email').touched
+                 || reactiveCustomerForm.get('email').dirty)
+                 && !reactiveCustomerForm.get('email').valid }"/>
+          <span class="invalid-feedback">
+            <span *ngIf="reactiveCustomerForm.get('email').errors?.required">
+              Please enter your email address.
+            </span>
+            <span *ngIf="reactiveCustomerForm.get('email').errors?.email">
+              Please enter a valid email address.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="phoneId">Phone</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="phoneId"
+                 type="tel"
+                 placeholder="Phone"
+                 formControlName="phone"
+                 [ngClass]="{'is-invalid': !reactiveCustomerForm.get('phone').valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="reactiveCustomerForm.get('phone').errors?.required">
+              Please enter your phone number.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label pt-0">Send Notifications</label>
+        <div class="col-md-8">
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     type="radio"
+                     value="email"
+                     formControlName="notification" (click)="setNotification('email')">Email
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     type="radio"
+                     value="text"
+                     formControlName="notification" (click)="setNotification('text')">Text
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <div class="col-md-8">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     id="sendCatalogId"
+                     type="checkbox"
+                     formControlName="sendCatalog"> Send me your catalog
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="form-group row mb-2">
+        <div class="offset-md-2 col-md-4">
+          <button class="btn btn-primary mr-3"
+                  type="submit"
+                  style="width:80px"
+                  [title]="reactiveCustomerForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                  [disabled]="!reactiveCustomerForm.valid">
+            Save
+          </button>
+          <button class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="populateTestData()">
+            Test Data
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<br>Dirty: {{ reactiveCustomerForm.dirty }}
+<br>Touched: {{ reactiveCustomerForm.touched }}
+<br>Valid: {{ reactiveCustomerForm.valid }}
+<br>Value: {{ reactiveCustomerForm.value | json }}
