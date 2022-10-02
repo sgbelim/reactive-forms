@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Customer} from "../../customers/customers/customer";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {rangeValidatorWithParameter} from "./validators/range.validator";
+import {confirmEmailValidator} from "./validators/confirm-email.validator";
 
 @Component({
   selector: 'app-reactive-customers',
@@ -20,7 +21,14 @@ export class ReactiveCustomersComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(3)]],
       //  lastName: {value: 'n/a', disabled: true},
       lastName: ['', [Validators.required, Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email]],
+
+      emailGroup: this.formBuilder.group(
+        {
+          email: ['', [Validators.required, Validators.email]],
+          confirmEmail: ['', [Validators.required]]
+        },
+        {validators: [confirmEmailValidator]}),
+
       phone: [''],
       notification: 'email',
       // rating: [null, [rangeValidator]],

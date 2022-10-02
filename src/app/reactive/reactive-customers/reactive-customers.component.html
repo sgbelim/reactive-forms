@@ -54,26 +54,53 @@
         </div>
       </div>
 
-      <div class="form-group row mb-2">
-        <label class="col-md-2 col-form-label"
-               for="emailId">Email</label>
-        <div class="col-md-8">
-          <input class="form-control"
-                 id="emailId"
-                 type="email"
-                 placeholder="Email (required)"
-                 formControlName="email"
-                 [ngClass]="{'is-invalid': (reactiveCustomerForm.get('email').touched
-                 || reactiveCustomerForm.get('email').dirty)
-                 && !reactiveCustomerForm.get('email').valid }"/>
-          <span class="invalid-feedback">
-            <span *ngIf="reactiveCustomerForm.get('email').errors?.required">
+      <div class="emailGroup" formGroupName="emailGroup">
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="emailId">Email</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="emailId"
+                   type="email"
+                   placeholder="Email (required)"
+                   formControlName="email"
+                   [ngClass]="{'is-invalid': reactiveCustomerForm.get('emailGroup').errors ||
+                   ((reactiveCustomerForm.get('emailGroup.email').touched
+                 || reactiveCustomerForm.get('emailGroup.email').dirty)
+                 && !reactiveCustomerForm.get('emailGroup.email').valid) }"/>
+            <span class="invalid-feedback">
+            <span *ngIf="reactiveCustomerForm.get('emailGroup.email').errors?.required">
               Please enter your email address.
             </span>
-            <span *ngIf="reactiveCustomerForm.get('email').errors?.email">
+            <span *ngIf="reactiveCustomerForm.get('emailGroup.email').errors?.email">
               Please enter a valid email address.
             </span>
           </span>
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="emailId">Confirm Email</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="confirmEmailId"
+                   type="email"
+                   placeholder="Confirm Email (required)"
+                   formControlName="confirmEmail"
+                   [ngClass]="{'is-invalid':  reactiveCustomerForm.get('emailGroup').errors ||
+                   ((reactiveCustomerForm.get('emailGroup.confirmEmail').touched
+                 || reactiveCustomerForm.get('emailGroup.confirmEmail').dirty)
+                 && !reactiveCustomerForm.get('emailGroup.confirmEmail').valid) }"/>
+            <span class="invalid-feedback">
+              <span *ngIf="reactiveCustomerForm.get('emailGroup.confirmEmail').errors?.required">
+                Please confirm your email address.
+              </span>
+              <span *ngIf="reactiveCustomerForm.get('emailGroup').errors?.match">
+                The confirmation does not match the email address.
+              </span>
+          </span>
+          </div>
         </div>
       </div>
 
