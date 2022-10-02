@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Customer} from "../../customers/customers/customer";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {rangeValidatorWithParameter} from "./validators/range.validator";
 import {confirmEmailValidator} from "./validators/confirm-email.validator";
 import {debounceTime} from "rxjs";
@@ -15,6 +15,10 @@ export class ReactiveCustomersComponent implements OnInit {
   customer = new Customer();
   emailMessage: string
   confirmEmailMessage: string
+
+  get addresses(): FormArray {
+    return <FormArray>this.reactiveCustomerForm.get('addresses');
+  }
 
   private validationMessages = {
     required: 'Please enter your email address.',
@@ -42,7 +46,10 @@ export class ReactiveCustomersComponent implements OnInit {
       notification: 'email',
       // rating: [null, [rangeValidator]],
       rating: [null, [rangeValidatorWithParameter(1, 5)]],
-      sendCatalog: true
+      sendCatalog: true,
+      addresses: this.formBuilder.array([
+        this.buildAddress()
+      ])
     });
 
     this.reactiveCustomerForm.get('notification').valueChanges
@@ -104,4 +111,18 @@ export class ReactiveCustomersComponent implements OnInit {
     }
   }
 
+  buildAddress(): FormGroup {
+    return this.formBuilder.group({
+      addressType: 'home',
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      zip: ''
+    });
+  }
+
+  addAddress() {
+   this.addresses.push(this.buildAddress());
+  }
 }
