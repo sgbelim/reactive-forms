@@ -64,18 +64,10 @@
                    type="email"
                    placeholder="Email (required)"
                    formControlName="email"
-                   [ngClass]="{'is-invalid': reactiveCustomerForm.get('emailGroup').errors ||
-                   ((reactiveCustomerForm.get('emailGroup.email').touched
-                 || reactiveCustomerForm.get('emailGroup.email').dirty)
-                 && !reactiveCustomerForm.get('emailGroup.email').valid) }"/>
+                   [ngClass]="{'is-invalid': emailMessage }"/>
             <span class="invalid-feedback">
-            <span *ngIf="reactiveCustomerForm.get('emailGroup.email').errors?.required">
-              Please enter your email address.
+              {{emailMessage}}
             </span>
-            <span *ngIf="reactiveCustomerForm.get('emailGroup.email').errors?.email">
-              Please enter a valid email address.
-            </span>
-          </span>
           </div>
         </div>
 
@@ -88,17 +80,9 @@
                    type="email"
                    placeholder="Confirm Email (required)"
                    formControlName="confirmEmail"
-                   [ngClass]="{'is-invalid':  reactiveCustomerForm.get('emailGroup').errors ||
-                   ((reactiveCustomerForm.get('emailGroup.confirmEmail').touched
-                 || reactiveCustomerForm.get('emailGroup.confirmEmail').dirty)
-                 && !reactiveCustomerForm.get('emailGroup.confirmEmail').valid) }"/>
+                   [ngClass]="{'is-invalid':  confirmEmailMessage }"/>
             <span class="invalid-feedback">
-              <span *ngIf="reactiveCustomerForm.get('emailGroup.confirmEmail').errors?.required">
-                Please confirm your email address.
-              </span>
-              <span *ngIf="reactiveCustomerForm.get('emailGroup').errors?.match">
-                The confirmation does not match the email address.
-              </span>
+                {{confirmEmailMessage}}
           </span>
           </div>
         </div>
@@ -127,18 +111,27 @@
         <div class="col-md-8">
           <div class="form-check form-check-inline">
             <label class="form-check-label">
+              <!-- <input class="form-check-input"
+                          type="radio"
+                          value="email"
+                          formControlName="notification" (click)="setNotification('email')">Email
+               -->
               <input class="form-check-input"
                      type="radio"
                      value="email"
-                     formControlName="notification" (click)="setNotification('email')">Email
+                     formControlName="notification">Email
             </label>
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
+              <!--    <input class="form-check-input"
+                         type="radio"
+                         value="text"
+                         formControlName="notification" (click)="setNotification('text')">Text-->
               <input class="form-check-input"
                      type="radio"
                      value="text"
-                     formControlName="notification" (click)="setNotification('text')">Text
+                     formControlName="notification">Text
             </label>
           </div>
         </div>

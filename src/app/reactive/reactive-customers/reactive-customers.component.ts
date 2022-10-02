@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Customer} from "../../customers/customers/customer";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {rangeValidatorWithParameter} from "./validators/range.validator";
 import {confirmEmailValidator} from "./validators/confirm-email.validator";
+import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-reactive-customers',
@@ -12,6 +13,14 @@ import {confirmEmailValidator} from "./validators/confirm-email.validator";
 export class ReactiveCustomersComponent implements OnInit {
   reactiveCustomerForm: FormGroup;
   customer = new Customer();
+  emailMessage: string
+  confirmEmailMessage: string
+
+  private validationMessages = {
+    required: 'Please enter your email address.',
+    email: 'Please enter a valid email address.',
+    match: 'The confirmation does not match the email address..'
+  }
 
   constructor(private formBuilder: FormBuilder) {
   }
@@ -34,7 +43,26 @@ export class ReactiveCustomersComponent implements OnInit {
       // rating: [null, [rangeValidator]],
       rating: [null, [rangeValidatorWithParameter(1, 5)]],
       sendCatalog: true
-    })
+    });
+
+    this.reactiveCustomerForm.get('notification').valueChanges
+      .subscribe((value) => {
+        this.setNotification(value);
+      })
+
+    const emailControl = this.reactiveCustomerForm.get('emailGroup.email');
+    emailControl.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe((value) => {
+       this.emailMessage=  this.setErrorMessage(emailControl, this.emailMessage)
+      })
+
+    const emailGroup = this.reactiveCustomerForm.get('emailGroup');
+    emailGroup.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe((value) => {
+        this.confirmEmailMessage=  this.setErrorMessage(emailGroup, this.confirmEmailMessage)
+      })
   }
 
   populateTestData() {
@@ -59,4 +87,21 @@ export class ReactiveCustomersComponent implements OnInit {
 
     phoneControl.updateValueAndValidity();
   }
+
+  private setErrorMessage(control: AbstractControl, errorMessage: string): string {
+    errorMessage = '';
+
+    if ((control.touched || control.dirty) && control.errors) {
+
+      Object.keys(control.errors)
+        .map(key => {
+          errorMessage = this.validationMessages[key];
+        })
+        .join(' ');
+
+      return errorMessage;
+
+    }
+  }
+
 }
